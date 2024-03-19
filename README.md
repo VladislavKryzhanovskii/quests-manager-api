@@ -2,6 +2,8 @@
 
 ### Настройка среды 
 
+#### Для запуска приложения необходимо установить Docker
+
 #### Для запуска приложения необходимо выполнить:
 ```shell
 git clone https://github.com/VladislavKryzhanovskii/quests-manager-api.git
