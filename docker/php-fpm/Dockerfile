@@ -10,39 +10,37 @@ RUN if [ ${INSTALL_XDEBUG} = true ]; \
     then \
       pecl install xdebug && docker-php-ext-enable xdebug; \
     fi;
-COPY ./docker/xdebug/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+
+COPY ./docker/php-fpm/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
 # Postgres
 RUN apk add --no-cache libpq-dev && docker-php-ext-install pdo_pgsql
 
-# Configure non-root user
+# Configure non-root user.
 ARG PUID=1000
 ARG PGID=1000
 RUN apk --no-cache add shadow && \
     groupmod -o -g ${PGID} www-data && \
     usermod -o -u ${PUID} -g www-data www-data
 
-# Nginx
-RUN apk add --update --no-cache nginx
-COPY ./docker/nginx/nginx.conf /etc/nginx/
-RUN chown -Rf www-data:www-data /var/lib/nginx
-
 # Source code
 RUN chown www-data:www-data /var/www
 COPY --chown=www-data:www-data ./ /var/www
 WORKDIR /var/www
+
+USER www-data
 
 # Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 ARG BUILD_MODE=dev
 RUN if [ ${BUILD_MODE} = dev ]; \
     then \
-      composer install --no-interaction; \
+      composer install --no-interaction --no-scripts; \
     else \
       composer install --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader; \
     fi;
 RUN chown -R www-data:www-data /var/www/vendor/
 
-EXPOSE 8080
+CMD php-fpm
 
-CMD ["bin/sh", "./docker/php-fpm/run.sh"]
+EXPOSE 9000

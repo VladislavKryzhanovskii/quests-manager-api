@@ -26,7 +26,7 @@ final readonly class ExceptionListener
         $this->logger->error($exception->getMessage(), $exception->getTrace());
 
         $response = new JsonResponse();
-        $response->setData(['message' => sprintf('Возникла ошибка %s, c кодом %s', $exception->getMessage(), $exception->getCode())]);
+        $response->setData(['message' => sprintf('Возникла ошибка: %s, c кодом: %s', $exception->getMessage(), $exception->getCode())]);
 
         if ($exception instanceof HttpExceptionInterface) {
             $response->setStatusCode($exception->getStatusCode());
