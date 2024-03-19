@@ -19,7 +19,7 @@ class UserRepositoryTest extends KernelTestCase
 
     public function testGetPaginatedUsersReturnPaginatorInstance(): void
     {
-        $result = $this->repository->getPaginatedUsers(1, 1);
+        $result = $this->repository->getPaginatedUsers(page: 1, limit: 1);
         $this->assertInstanceOf(Paginator::class, $result);
     }
 

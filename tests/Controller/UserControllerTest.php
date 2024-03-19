@@ -58,8 +58,10 @@ class UserControllerTest extends WebTestCase
      */
     public function testCreateUser(): void
     {
-        $content = sprintf('{"name": "%s"}', $this->faker->userName());
-        $this->client->request(Request::METHOD_POST, '/api/users', server: ['Content-Type' => 'application/json'], content: $content);
+        $this->client->request(Request::METHOD_POST, '/api/users',
+            server: ['Content-Type' => 'application/json'],
+            content: sprintf('{"name": "%s"}', $this->faker->userName())
+        );
 
         $this->assertEquals(Response::HTTP_CREATED, $this->client->getResponse()->getStatusCode());
         $this->assertResponseHeaderSame('Content-Type', 'application/json');
@@ -94,7 +96,8 @@ class UserControllerTest extends WebTestCase
         $this->assertArrayHasKey('balance', $jsonContent);
         $this->assertArrayHasKey('history', $jsonContent);
 
-        $this->assertEquals($jsonContent['id'], $user->getId());
+        $this->assertEquals($user->getId(), $jsonContent['id']);
+        $this->assertEquals($user->getName(), $jsonContent['name']);
     }
 
     /**
@@ -130,6 +133,7 @@ class UserControllerTest extends WebTestCase
     {
         /** @var AbstractExecutor $executor */
         $executor = $this->databaseTool->loadFixtures([UserFixture::class]);
+        /** @var User $user */
         $user = $executor->getReferenceRepository()->getReference(UserFixture::REFERENCE, User::class);
         $userId = $user->getId();
 
