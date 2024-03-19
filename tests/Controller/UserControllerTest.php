@@ -28,7 +28,8 @@ class UserControllerTest extends WebTestCase
         $this->assertResponseHeaderSame('Content-Type', 'application/json');
         $this->assertJson($this->client->getResponse()->getContent());
 
-        $jsonContent = json_decode($this->client->getResponse()->getContent());
+        $jsonContent = json_decode($this->client->getResponse()->getContent(), true);
+
         $this->assertArrayHasKey('totalCount', $jsonContent);
         $this->assertArrayHasKey('pageCount', $jsonContent);
         $this->assertArrayHasKey('result', $jsonContent);
@@ -39,11 +40,12 @@ class UserControllerTest extends WebTestCase
      */
     public function testCreateUser(): void
     {
-        $this->client->request('POST', '/api/users/', server: ['Content-Type' => 'application/json'], content: '{"name": testUser}');
+        $this->client->request(Request::METHOD_POST, '/api/users/', server: ['Content-Type' => 'application/json'], content: '{"name": "testUser"}');
+
         $this->assertEquals(Response::HTTP_CREATED, $this->client->getResponse()->getStatusCode());
         $this->assertResponseHeaderSame('Content-Type', 'application/json');
         $this->assertJson($this->client->getResponse()->getContent());
-        $this->assertArrayHasKey('id', json_decode($this->client->getResponse()->getContent()));
+        $this->assertArrayHasKey('id', json_decode($this->client->getResponse()->getContent(), true));
     }
 
 

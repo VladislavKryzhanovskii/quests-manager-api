@@ -60,8 +60,8 @@ class UserController extends AbstractController
     #[Route('/', name: 'create', methods: [Request::METHOD_POST])]
     public function create(Request $request): JsonResponse
     {
-        /** @var User $user */
         $user = $this->serializer->deserialize($request->getContent(), User::class, 'json');
+
         $errors = $this->validator->validate($user);
 
         if (count($errors) > 0) {
