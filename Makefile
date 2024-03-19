@@ -34,23 +34,21 @@ rebuild:
 
 app_bash:
 	${DOCKER_COMPOSE} exec -u www-data php-fpm bash
-php:
-	${DOCKER_COMPOSE} exec -u www-data php-fpm bash
 fixture:
-	${DOCKER_COMPOSE} exec -u www-data php-fpm bin/console doctrine:fixtures:load
+	${DOCKER_COMPOSE} exec -u www-data php-fpm php bin/console doctrine:fixtures:load
 test:
-	${DOCKER_COMPOSE} exec -u www-data php-fpm bin/phpunit
+	${DOCKER_COMPOSE} exec -u www-data php-fpm php bin/phpunit
 cache:
-	docker-compose -f ./docker/docker-compose.yml exec -u www-data php-fpm bin/console cache:clear
-	docker-compose -f ./docker/docker-compose.yml exec -u www-data php-fpm bin/console cache:clear --env=test
+	docker-compose -f ./docker/docker-compose.yml exec -u www-data php-fpm php bin/console cache:clear
+	docker-compose -f ./docker/docker-compose.yml exec -u www-data php-fpm php bin/console cache:clear --env=test
 
 ##################
 # Database
 ##################
 
 migrate:
-	${DOCKER_COMPOSE} exec -u www-data php-fpm bin/console doctrine:migrations:migrate --no-interaction
+	${DOCKER_COMPOSE} exec -u www-data php-fpm php bin/console doctrine:migrations:migrate --no-interaction
 diff:
-	${DOCKER_COMPOSE} exec -u www-data php-fpm bin/console doctrine:migrations:diff --no-interaction
+	${DOCKER_COMPOSE} exec -u www-data php-fpm php bin/console doctrine:migrations:diff --no-interaction
 drop:
-	docker-compose -f ./docker/docker-compose.yml exec -u www-data php-fpm bin/console doctrine:schema:drop --force
+	docker-compose -f ./docker/docker-compose.yml exec -u www-data php-fpm php bin/console doctrine:schema:drop --force
