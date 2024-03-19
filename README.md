@@ -20,6 +20,7 @@ make test
 ```
 
 ### Методы API:
+
 UserController
 - POST /api/users - добавление пользователя
 - GET /api/users?page=1&limit=10 - получение всех пользователей (Пагинация: page - номер страницы, limit - максимальное количество элементов на странице)
@@ -27,6 +28,7 @@ UserController
 - PATCH|PUT /api/users/{id} - обновление информации о пользователе
 - DELETE /api/users/{id} - удаление пользователя
 - PATCH /api/users/{id}/quests/{questId} - добавление задания пользователю (событие выполнения задания)
+  
 QuestController
 - POST /api/quests - добавление задания
 - GET /api/quests?page=1&limit=10 - получение всех заданий (Пагинация: page - номер страницы, limit - максимальное количество элементов на странице)
