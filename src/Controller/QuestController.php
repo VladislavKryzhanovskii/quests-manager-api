@@ -31,7 +31,7 @@ class QuestController extends AbstractController
     {
     }
 
-    #[Route('/', methods: [Request::METHOD_GET])]
+    #[Route(methods: [Request::METHOD_GET])]
     public function get(Request $request): JsonResponse
     {
         $paginator = $this->questService->get();
@@ -50,13 +50,14 @@ class QuestController extends AbstractController
     }
 
     #[Route('/{id<\d+>}', methods: [Request::METHOD_GET])]
-    public function find(Quest $quest): JsonResponse
+    public function find(int $id): JsonResponse
     {
+        $quest = $this->questService->find($id);
         $json = $this->serializer->serialize($quest, 'json', [AbstractNormalizer::GROUPS => 'details']);
         return JsonResponse::fromJsonString($json);
     }
 
-    #[Route('/', methods: [Request::METHOD_POST])]
+    #[Route(methods: [Request::METHOD_POST])]
     public function save(Request $request): JsonResponse
     {
         /** @var Quest $quest */

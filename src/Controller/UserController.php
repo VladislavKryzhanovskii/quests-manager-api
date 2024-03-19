@@ -31,7 +31,7 @@ class UserController extends AbstractController
     }
 
 
-    #[Route('/', name: 'collection', methods: [Request::METHOD_GET])]
+    #[Route( name: 'collection', methods: [Request::METHOD_GET])]
     public function get(Request $request): JsonResponse
     {
         $paginator = $this->userService->get();
@@ -50,14 +50,16 @@ class UserController extends AbstractController
     }
 
     #[Route('/{id<\d+>}', name: 'find', methods: [Request::METHOD_GET])]
-    public function find(User $user): JsonResponse
+    public function find(int $id): JsonResponse
     {
+        $user = $this->userService->find($id);
+
         $json = $this->serializer->serialize($user, 'json', [AbstractNormalizer::GROUPS => 'details']);
         return JsonResponse::fromJsonString($json);
     }
 
 
-    #[Route('/', name: 'create', methods: [Request::METHOD_POST])]
+    #[Route(name: 'create', methods: [Request::METHOD_POST])]
     public function create(Request $request): JsonResponse
     {
         $user = $this->serializer->deserialize($request->getContent(), User::class, 'json');

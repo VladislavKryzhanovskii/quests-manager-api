@@ -50,7 +50,7 @@ final readonly class UserNormalizer implements NormalizerInterface
         $normalized['history'] = $user->getQuestCompletionHistories()->map(static fn(QuestCompletionHistory $history): array => [
             'id' => $history->getQuest()->getId(),
             'name' => $history->getQuest()->getName(),
-            'currentCost' => $history->getQuest()->getCost(),
+            'cost' => $history->getQuest()->getCost(),
             'completeDate' => $history->getCompleteDate()->format('m/d/Y H:i:s')
         ])->toArray();
 

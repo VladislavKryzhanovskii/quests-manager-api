@@ -8,15 +8,17 @@ use Doctrine\Persistence\ObjectManager;
 
 class QuestFixture extends Fixture
 {
+    /** @var string */
+    public const REFERENCE = 'quest';
 
     public function load(ObjectManager $manager): void
     {
-        for ($i = 0; $i < 20; $i++) {
-            $quest = (new Quest())
-                ->setName('testQuest_' . $i)
-                ->setCost(mt_rand(10, 200));
-            $manager->persist($quest);
-        }
+        $quest = (new Quest())
+            ->setName(sprintf('testQuest_%s', time()))
+            ->setCost(mt_rand(10, 200));
+        $manager->persist($quest);
         $manager->flush();
+
+        $this->setReference(self::REFERENCE, $quest);
     }
 }
